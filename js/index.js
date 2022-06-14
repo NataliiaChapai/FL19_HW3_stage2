@@ -44,7 +44,7 @@ new Unit({
     health: 300,
     damage: 100,
     armor: 5,
-    speed: 1000
+    speed: 3000
 }),
 new Unit({
     src: 'https://wow.zamimg.com/uploads/screenshots/normal/423646-.jpg',
@@ -52,7 +52,7 @@ new Unit({
     health: 100,
     damage: 30,
     armor: 2,
-    speed: 4000
+    speed: 1000
 })];
 
 class Display {
@@ -133,26 +133,39 @@ class Game {
     const fightBtn = document.querySelector('.fight');
         fightBtn.addEventListener('click', () => {
             const showHealth = document.querySelectorAll('.health');
+            const time = 1000;
             const interval1 = setInterval(() => {
                 showHealth[0].textContent = `Health: ${Math.floor(fighters[0].loseHealth())}`;
                 if (fighters[0].health <= 0) {
+                    showHealth[0].textContent = 'Health: 0';
                     clearInterval(interval1);
                     clearInterval(interval2);
-                    alert(`Win ${fighters[1].name}`);
-                    display.reset();
-                    return;
+                    const interval = setInterval(() => {
+                        alert(`Win ${fighters[1].name}`);
+                        display.reset();
+                         if (alert) {
+                            clearInterval(interval);
+                        }
+                        return;
+                    }, time)
                 }
             }, fighters[1].speed);
             const interval2 = setInterval(() => {
                 showHealth[1].textContent = `Health: ${Math.floor(fighters[1].loseHealth())}`;
                 if (fighters[1].health <= 0) {
+                    showHealth[1].textContent = 'Health: 0';
                     clearInterval(interval1);
                     clearInterval(interval2);
-                    alert(`Win ${fighters[0].name}`);
-                    display.reset();
-                    return;
+                    const interval = setInterval(() => {
+                        alert(`Win ${fighters[0].name}`);
+                        if (alert) {
+                            clearInterval(interval);
+                        }
+                        display.reset();
+                        return;
+                    }, time)
                 }
-            }, fighters[0].speed);        
+            }, fighters[0].speed);
         });
     }
 }
